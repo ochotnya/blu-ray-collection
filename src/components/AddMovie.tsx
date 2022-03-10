@@ -20,8 +20,7 @@ function AddMovie() {
   const [receivedMovies, setReceivedMovies] = useState<ItmdbMovie[]>([]);
   const [movieDetails, setMovieDetails] = useState<ItmdbMovie>();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const title: string | undefined = titleRef.current?.value;
     const diskType: string | undefined = diskTypeRef.current?.value;
     const newDisk: IBluRay = {
@@ -31,6 +30,11 @@ function AddMovie() {
     };
 
     writeToFirebase(newDisk);
+  };
+
+  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    search();
   };
   const search = async () => {
     const title = titleRef.current?.value;
@@ -46,19 +50,10 @@ function AddMovie() {
   return (
     <div>
       <Form
+        onSubmit={handleSubmitSearch}
         className="m-3"
-        onSubmit={handleSubmit}
-        style={{ maxWidth: "50rem" }}
+        style={{ maxWidth: "45rem" }}
       >
-        <Form.Group className="mb-3" controlId="title">
-          <Form.Label>Title</Form.Label>
-          <Form.Control ref={titleRef} type="text" placeholder="Enter title" />
-
-          <Button className="mt-1" onClick={search}>
-            Search
-          </Button>
-          <MovieSuggestions movies={receivedMovies} select={setMovieDetails} />
-        </Form.Group>
         <Form.Group className="mb-3" controlId="Disk type">
           <Form.Label>Disk type</Form.Label>
           <Form.Select ref={diskTypeRef}>
@@ -66,9 +61,31 @@ function AddMovie() {
             <option>4K</option>
           </Form.Select>
         </Form.Group>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
+        <Form.Label>Title</Form.Label>
+        <Form.Control ref={titleRef} type="text" placeholder="Enter title" />
+        <div className="d-grid gap-2">
+          <Button className="mt-1" onClick={search}>
+            Search
+          </Button>
+        </div>
+        <MovieSuggestions
+          movies={receivedMovies}
+          select={setMovieDetails}
+          selectedID={movieDetails?.id}
+        />
+        <div className="d-grid gap-2">
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={handleSubmit}
+            disabled={movieDetails === undefined}
+          >
+            Submit
+          </Button>
+          <Button variant="danger" size="lg">
+            Cancel
+          </Button>
+        </div>
       </Form>
     </div>
   );
