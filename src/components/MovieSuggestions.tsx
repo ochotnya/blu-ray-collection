@@ -8,9 +8,11 @@ interface IMovieSuggestions {
   selectedID: number | undefined;
 }
 function MovieSuggestions(props: IMovieSuggestions) {
+  //list received movies or show "No suggestions"
   return (
     <>
       {props.movies.length > 0 ? (
+        //list
         <div className="d-flex mt-1 flex-wrap justify-content-between">
           {props.movies.map((movie) => {
             return (
@@ -45,6 +47,7 @@ function MovieSuggestions(props: IMovieSuggestions) {
           })}
         </div>
       ) : (
+        //no items
         <div className="d-flex justify-content-center mt-3 mb-3 text-muted">
           <h1>No suggestions</h1>
         </div>

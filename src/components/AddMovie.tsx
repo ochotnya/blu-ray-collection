@@ -13,6 +13,7 @@ import {
 import { db } from "../firebase";
 import { searchMovie } from "../requests";
 import MovieSuggestions from "./MovieSuggestions";
+import { Link, Router } from "react-router-dom";
 
 function AddMovie() {
   const titleRef = useRef<HTMLInputElement>(null);
@@ -49,6 +50,7 @@ function AddMovie() {
   };
   return (
     <div>
+      <Link to="/">Home</Link>
       <Form
         onSubmit={handleSubmitSearch}
         className="m-3"
