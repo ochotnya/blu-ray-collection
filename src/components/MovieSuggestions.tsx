@@ -14,9 +14,14 @@ function MovieSuggestions(props: IMovieSuggestions) {
       {props.movies.length > 0 ? (
         //list
         <div className="d-flex mt-1 flex-wrap justify-content-between">
-          {props.movies.map((movie) => {
+          {props.movies.map((movie, idx) => {
             return (
-              <Card style={{ width: "10rem" }} className=" border-1">
+              <Card
+                key={idx}
+                data-testid="movieCard"
+                style={{ width: "10rem" }}
+                className=" border-1"
+              >
                 <Card.Img
                   variant="top"
                   src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}

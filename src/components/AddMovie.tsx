@@ -41,6 +41,7 @@ function AddMovie() {
     const title = titleRef.current?.value;
     if (title !== "") {
       const list = await searchMovie(title);
+
       if (list !== undefined) setReceivedMovies(list);
     }
   };
