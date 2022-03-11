@@ -50,7 +50,7 @@ function AddMovie() {
   };
   return (
     <div>
-      <Link to="/">Home</Link>
+      {/* <Link to="/">Home</Link> */}
       <Form
         onSubmit={handleSubmitSearch}
         className="m-3"
@@ -77,6 +77,7 @@ function AddMovie() {
         />
         <div className="d-grid gap-2">
           <Button
+            name="submitButton"
             variant="primary"
             size="lg"
             onClick={handleSubmit}

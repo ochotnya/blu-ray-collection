@@ -10,7 +10,7 @@ interface IMovieSuggestions {
 function MovieSuggestions(props: IMovieSuggestions) {
   //list received movies or show "No suggestions"
   return (
-    <>
+    <div data-testid="MovieSuggestions">
       {props.movies.length > 0 ? (
         //list
         <div className="d-flex mt-1 flex-wrap justify-content-between">
@@ -52,7 +52,7 @@ function MovieSuggestions(props: IMovieSuggestions) {
           <h1>No suggestions</h1>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
