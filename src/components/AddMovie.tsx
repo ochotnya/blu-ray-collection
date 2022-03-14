@@ -1,57 +1,56 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { IBluRay } from "../interfaces/IBluRay";
 import { ItmdbMovie } from "../interfaces/ItmdbMovie";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  setDoc,
-  doc,
-  addDoc,
-} from "firebase/firestore/lite";
+import { collection, addDoc } from "firebase/firestore/lite";
 import { db } from "../firebase";
 import { searchMovie } from "../requests";
 import MovieSuggestions from "./MovieSuggestions";
-import { Link, Router } from "react-router-dom";
 
 function AddMovie() {
-  const titleRef = useRef<HTMLInputElement>(null);
-  const diskTypeRef = useRef<HTMLSelectElement>(null);
+  const [movieTitle, setMovieTitle] = useState("");
+  const [movieType, setMovieType] = useState("Blu-ray");
   const [receivedMovies, setReceivedMovies] = useState<ItmdbMovie[]>([]);
   const [movieDetails, setMovieDetails] = useState<ItmdbMovie>();
 
-  const handleSubmit = () => {
-    const title: string | undefined = titleRef.current?.value;
-    const diskType: string | undefined = diskTypeRef.current?.value;
-    const newDisk: IBluRay = {
-      title: title,
-      movieInfo: movieDetails,
-      type: diskType,
-    };
+  const changeMovieType = (e: ChangeEvent<HTMLInputElement>) => {
+    setMovieType(e.target.value);
+  };
 
-    writeToFirebase(newDisk);
+  const changeMovieTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setMovieTitle(e.target.value);
+    console.log(e.target.value);
+  };
+  const handleSubmit = () => {
+    if (movieDetails !== undefined) {
+      const newDisk: IBluRay = {
+        title: movieTitle,
+        movieInfo: movieDetails,
+        type: movieType,
+      };
+      writeToFirebase(newDisk);
+    }
+  };
+
+  const search = async () => {
+    if (movieTitle !== "") {
+      const list = await searchMovie(movieTitle);
+
+      if (list !== undefined) setReceivedMovies(list);
+    }
   };
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     search();
   };
-  const search = async () => {
-    const title = titleRef.current?.value;
-    if (title !== "") {
-      const list = await searchMovie(title);
 
-      if (list !== undefined) setReceivedMovies(list);
-    }
-  };
   const writeToFirebase = async (diskInfo: IBluRay) => {
     const collectionRef = collection(db, "movies");
     addDoc(collectionRef, diskInfo);
   };
   return (
     <div>
-      {/* <Link to="/">Home</Link> */}
       <Form
         onSubmit={handleSubmitSearch}
         className="m-3"
@@ -59,13 +58,22 @@ function AddMovie() {
       >
         <Form.Group className="mb-3" controlId="Disk type">
           <Form.Label>Disk type</Form.Label>
-          <Form.Select ref={diskTypeRef}>
+          <Form.Control
+            as="select"
+            value={movieType}
+            onChange={changeMovieType}
+          >
             <option>Blu-Ray</option>
             <option>4K</option>
-          </Form.Select>
+          </Form.Control>
         </Form.Group>
         <Form.Label>Title</Form.Label>
-        <Form.Control ref={titleRef} type="text" placeholder="Enter title" />
+        <Form.Control
+          value={movieTitle}
+          type="text"
+          placeholder="Enter title"
+          onChange={changeMovieTitle}
+        />
         <div className="d-grid gap-2">
           <Button className="mt-1" onClick={search}>
             Search
