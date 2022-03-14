@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { db } from "../../firebase";
-import { onValue, ref, getDatabase } from "firebase/database";
+
 import { collection, getDocs, getFirestore } from "firebase/firestore";
-import {
-  Button,
-  Container,
-  Form,
-  Nav,
-  Navbar,
-  NavbarBrand,
-} from "react-bootstrap";
-import { ItmdbMovie } from "../../interfaces/ItmdbMovie";
+import { Form } from "react-bootstrap";
+
 import { IBluRay } from "../../interfaces/IBluRay";
 import NavigationBar from "../NavigationBar";
 import MyCollection from "../MyCollection";

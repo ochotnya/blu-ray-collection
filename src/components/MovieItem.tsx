@@ -15,7 +15,6 @@ function MovieItem(props: IMovieItem) {
       border={props.details.type === "4K" ? "dark" : "primary"}
       className="m-1 movie-card"
       data-mdb-ripple-color="light"
-      //   style={{ width: "10rem", height: "22rem" }}
     >
       <Card.Header
         className={

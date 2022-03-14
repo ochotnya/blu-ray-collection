@@ -1,5 +1,3 @@
-import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
 import { IBluRay } from "../interfaces/IBluRay";
 import MovieItem from "./MovieItem";
 import "./MoviesGrid.css";
@@ -12,15 +10,6 @@ function MyCollection(props: IMyCollection) {
       {props.movies.map((movie, index) => (
         <MovieItem details={movie} />
       ))}
-      {/* <Container fluid style={{ background: "red" }}>
-        <Row>
-          {props.movies.map((movie, index) => (
-            <Col className="col-1 m-2">
-              <MovieItem details={movie} />
-            </Col>
-          ))}
-        </Row>
-      </Container> */}
     </div>
   );
 }

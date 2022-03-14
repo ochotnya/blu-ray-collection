@@ -7,12 +7,12 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAIDhw_iGrpvGBQ-SFHK-ELzt1D-4bUw7A",
-  authDomain: "my-blurays.firebaseapp.com",
-  projectId: "my-blurays",
-  storageBucket: "my-blurays.appspot.com",
-  messagingSenderId: "182977241769",
-  appId: "1:182977241769:web:900b2cbc07ebcef4e83fb8",
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_APPID,
 };
 
 // Initialize Firebase

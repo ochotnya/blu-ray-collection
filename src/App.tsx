@@ -1,7 +1,6 @@
-import React, { useState } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import AddMovie from "./components/AddMovie";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Home from "./components/pages/PageHome";
 import NewMovie from "./components/pages/PageNewMovie";
 function App() {

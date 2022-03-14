@@ -1,11 +1,7 @@
 import axios from "axios";
 import { ISearchTMDBResponse } from "./interfaces/ISearchTMBDResponse";
-import { ItmdbMovie } from "./interfaces/ItmdbMovie";
-const apiKey = process.env.REACT_APP_API_KEY;
 
-const requests = {
-  searchMovie: `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=Avengers&page=1&include_adult=false`,
-};
+const apiKey = process.env.REACT_APP_API_KEY;
 
 const searchMovie = async (title: string | undefined) => {
   if (title !== undefined) {
