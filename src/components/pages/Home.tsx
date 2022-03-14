@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { db } from "../../firebase";
 import { onValue, ref, getDatabase } from "firebase/database";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
-import { Button } from "react-bootstrap";
+import { Button, Container, Nav, Navbar, NavbarBrand } from "react-bootstrap";
 import { ItmdbMovie } from "../../interfaces/ItmdbMovie";
 import { IBluRay } from "../../interfaces/IBluRay";
+import NavigationBar from "../NavigationBar";
 
 function Home() {
   const [myMovies, setmyMovies] = useState<IBluRay[]>([]);
@@ -22,7 +23,7 @@ function Home() {
 
   return (
     <div>
-      <Link to="/newmovie">Add new movie</Link>
+      <NavigationBar />
       <Button onClick={async () => setmyMovies(await getData())}>get</Button>
       {myMovies.map((movie) => (
         <h1>{movie.title}</h1>
