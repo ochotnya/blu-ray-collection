@@ -6,16 +6,21 @@ import { Form } from "react-bootstrap";
 import { IBluRay } from "../../interfaces/IBluRay";
 import NavigationBar from "../NavigationBar";
 import MyCollection from "../MyCollection";
+import { IFirestoreMovie } from "../../interfaces/IFirestoreMovie";
 
 function Home() {
-  const [myMovies, setmyMovies] = useState<IBluRay[]>([]);
+  const [myMovies, setmyMovies] = useState<IFirestoreMovie[]>([]);
   const getData = async () => {
     try {
       const querySnapshot = await getDocs(collection(getFirestore(), "movies"));
 
-      const result: IBluRay[] = [];
+      const result: IFirestoreMovie[] = [];
       querySnapshot.docs.forEach((doc) => {
-        result.push(doc.data() as IBluRay);
+        const item: IFirestoreMovie = {
+          id: doc.id,
+          data: doc.data() as IBluRay,
+        };
+        result.push(item);
       });
 
       return result;
