@@ -1,4 +1,3 @@
-import { IBluRay } from "../interfaces/IBluRay";
 import { IFirestoreMovie } from "../interfaces/IFirestoreMovie";
 import MovieItem from "./MovieItem";
 import "./MoviesGrid.css";
