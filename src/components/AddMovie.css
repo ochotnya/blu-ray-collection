@@ -1,0 +1,37 @@
+.add-movie-container {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-bar {
+  display: grid;
+  grid-template-columns: 10rem 20rem 6rem 6rem;
+  grid-template-rows: 0.2fr;
+  grid-template-areas: "diskType title search submit";
+  grid-gap: 0.2rem;
+}
+
+.disk-type {
+  grid-area: diskType;
+}
+.title {
+  grid-area: title;
+}
+.search {
+  max-height: 3rem;
+  grid-area: search;
+}
+.submit {
+  max-height: 3rem;
+  grid-area: submit;
+}
+
+@media screen and (max-width: 700px) {
+  .search-bar {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "diskType" "title" "search" "submit";
+  }
+}

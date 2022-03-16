@@ -6,9 +6,7 @@ function NewMovie() {
   return (
     <>
       <NavigationBar />
-      <div className="d-flex justify-content-center">
-        <AddMovie />
-      </div>
+      <AddMovie />
     </>
   );
 }

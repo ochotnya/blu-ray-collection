@@ -6,7 +6,7 @@ import { collection, addDoc } from "firebase/firestore/lite";
 import { db } from "../firebase";
 import { searchMovie } from "../requests";
 import MovieSuggestions from "./MovieSuggestions";
-
+import "./AddMovie.css";
 function AddMovie() {
   const [movieTitle, setMovieTitle] = useState("");
   const [movieType, setMovieType] = useState("Blu-ray");
@@ -51,14 +51,10 @@ function AddMovie() {
   };
   return (
     <div>
-      <Form
-        onSubmit={handleSubmitSearch}
-        className="m-3"
-        style={{ maxWidth: "45rem" }}
-      >
-        <Form.Group className="mb-3" controlId="Disk type">
-          <Form.Label>Disk type</Form.Label>
+      <div className="add-movie-container">
+        <Form onSubmit={handleSubmitSearch} className="search-bar">
           <Form.Control
+            className="disk-type"
             as="select"
             value={movieType}
             onChange={changeMovieType}
@@ -66,26 +62,20 @@ function AddMovie() {
             <option>Blu-Ray</option>
             <option>4K</option>
           </Form.Control>
-        </Form.Group>
-        <Form.Label>Title</Form.Label>
-        <Form.Control
-          value={movieTitle}
-          type="text"
-          placeholder="Enter title"
-          onChange={changeMovieTitle}
-        />
-        <div className="d-grid gap-2">
-          <Button className="mt-1" onClick={search}>
+
+          <Form.Control
+            className="title"
+            value={movieTitle}
+            type="text"
+            placeholder="Enter title"
+            onChange={changeMovieTitle}
+          />
+
+          <Button size="lg" className="search" onClick={search}>
             Search
           </Button>
-        </div>
-        <MovieSuggestions
-          movies={receivedMovies}
-          select={setMovieDetails}
-          selectedID={movieDetails?.id}
-        />
-        <div className="d-grid gap-2">
           <Button
+            className="submit"
             name="submitButton"
             variant="primary"
             size="lg"
@@ -94,11 +84,13 @@ function AddMovie() {
           >
             Submit
           </Button>
-          <Button variant="danger" size="lg">
-            Cancel
-          </Button>
-        </div>
-      </Form>
+        </Form>
+        <MovieSuggestions
+          movies={receivedMovies}
+          select={setMovieDetails}
+          selectedID={movieDetails?.id}
+        />
+      </div>
     </div>
   );
 }

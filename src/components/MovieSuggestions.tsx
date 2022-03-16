@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { ItmdbMovie } from "../interfaces/ItmdbMovie";
 
+import "./MoviesGrid.css";
 interface IMovieSuggestions {
   movies: ItmdbMovie[];
   select: Function;
@@ -13,14 +14,14 @@ function MovieSuggestions(props: IMovieSuggestions) {
     <div data-testid="MovieSuggestions">
       {props.movies.length > 0 ? (
         //list
-        <div className="d-flex mt-1 flex-wrap justify-content-between">
+        <div className="movies-grid">
           {props.movies.map((movie, idx) => {
             return (
               <Card
                 key={idx}
                 data-testid="movieCard"
-                style={{ width: "10rem" }}
-                className=" border-1"
+                style={{ width: "12rem" }}
+                className=" border-1 m-1"
               >
                 <Card.Img
                   variant="top"
