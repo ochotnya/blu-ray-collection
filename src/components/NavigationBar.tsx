@@ -8,7 +8,7 @@ function NavigationBar() {
         <Navbar.Brand href="/">My Movies</Navbar.Brand>
         <Nav className="me-auto">
           <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="newmovie">Add new movie</Nav.Link>
+          <Nav.Link href="/newmovie">Add new movie</Nav.Link>
         </Nav>
       </Container>
     </Navbar>

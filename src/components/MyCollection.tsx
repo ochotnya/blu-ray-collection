@@ -8,7 +8,7 @@ function MyCollection(props: IMyCollection) {
   return (
     <div className="movies-grid">
       {props.movies.map((movie, index) => (
-        <MovieItem details={movie} />
+        <MovieItem details={movie} key={index} />
       ))}
     </div>
   );

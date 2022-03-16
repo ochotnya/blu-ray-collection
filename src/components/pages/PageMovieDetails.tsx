@@ -1,35 +1,20 @@
-import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IBluRay } from "../../interfaces/IBluRay";
 import { IFirestoreMovie } from "../../interfaces/IFirestoreMovie";
+import { getMovie } from "../../utils/DBfunctions";
+import ConfirmationPopup from "../ConfirmationPopup";
 import MovieDetails from "../MovieDetails";
 import NavigationBar from "../NavigationBar";
 
 function PageMovieDetails() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState<IFirestoreMovie>();
-
-  const loadData = async () => {
-    setMovie(await getData());
+  const [showPopup, setShowPopup] = useState(false);
+  const handleConfirm = () => {
+    setShowPopup(false);
   };
-
-  const getData = async () => {
-    try {
-      const querySnapshot = await doc(
-        collection(getFirestore(), `movies`),
-        movieId
-      );
-      const mydoc = await getDoc(querySnapshot);
-      const item: IFirestoreMovie = {
-        id: mydoc.id,
-        data: mydoc.data() as IBluRay,
-      };
-      return item;
-    } catch (error) {
-      console.log(error);
-      return undefined;
-    }
+  const loadData = async () => {
+    if (movieId !== undefined) setMovie(await getMovie(movieId));
   };
 
   useEffect(() => {
@@ -39,9 +24,18 @@ function PageMovieDetails() {
   return (
     <div>
       <NavigationBar />
+      <ConfirmationPopup
+        handleNo={handleConfirm}
+        handleYes={handleConfirm}
+        variantYes="danger"
+        headerText="Delete item"
+        text="Are you sure you want to delete this movie from your collection?"
+        show={showPopup}
+        onHide={() => setShowPopup(false)}
+      />
       <div className="d-flex justify-content-center align-items-center">
         {movie !== undefined ? (
-          <MovieDetails data={movie?.data} />
+          <MovieDetails data={movie?.data} id={movie?.id} />
         ) : (
           <p>brak</p>
         )}
