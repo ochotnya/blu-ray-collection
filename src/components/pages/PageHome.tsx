@@ -15,6 +15,7 @@ import { IFirestoreMovie } from "../../interfaces/IFirestoreMovie";
 
 function Home() {
   const [myMovies, setmyMovies] = useState<IFirestoreMovie[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setmyMovies([]);
     const q = query(collection(getFirestore(), "movies"));
@@ -29,13 +30,21 @@ function Home() {
         result.push(item);
       });
       setmyMovies(result);
+      setIsLoading(false);
     });
     return unsubscribe;
   }, []);
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+      }}
+    >
       <NavigationBar />
+
       <div className="m-4">
         <Form className="m-1">
           <Form.Group>
@@ -45,7 +54,12 @@ function Home() {
             ></Form.Control>
           </Form.Group>
         </Form>
-        <MyCollection movies={myMovies} />
+        {isLoading && (
+          <div className="d-flex justify-content-center mt-5">
+            <div className="spinner-border" />
+          </div>
+        )}
+        {!isLoading && <MyCollection movies={myMovies} />}
       </div>
     </div>
   );
