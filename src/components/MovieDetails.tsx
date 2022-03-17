@@ -1,25 +1,15 @@
-import React, { useState } from "react";
+import React, { ChangeEvent } from "react";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { IBluRay } from "../interfaces/IBluRay";
-import { deleteMovie } from "../utils/DBfunctions";
-import ConfirmationPopup from "./ConfirmationPopup";
+import { IFirestoreMovie } from "../interfaces/IFirestoreMovie";
 import "./MovieDetails.css";
+
 interface IMovieDetails {
-  data: IBluRay;
-  id: string;
+  movie: IFirestoreMovie;
+  deleteEvent: () => void;
+  changeTypeEvent: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 function MovieDetails(props: IMovieDetails) {
-  const [showPopup, setShowPopup] = useState(false);
-  const movieData = props.data;
-  const navigate = useNavigate();
-
-  //try to remove item, close popup and return to home page
-  const handleConfirm = async () => {
-    await deleteMovie(props.id);
-    setShowPopup(false);
-    navigate(`/`);
-  };
+  const movieData = props.movie.data;
 
   const picPath =
     movieData.movieInfo.poster_path === null
@@ -27,16 +17,6 @@ function MovieDetails(props: IMovieDetails) {
       : `https://image.tmdb.org/t/p/original/${movieData.movieInfo.poster_path}`;
   return (
     <>
-      <ConfirmationPopup
-        handleNo={() => setShowPopup(false)}
-        handleYes={handleConfirm}
-        variantYes="danger"
-        headerText="Delete item"
-        text="Are you sure you want to delete this movie from your collection?"
-        show={showPopup}
-        onHide={() => setShowPopup(false)}
-      />
-
       <div className="movie-details-container shadow-lg rounded p-2">
         <div className="movie-title">
           <h1>{movieData?.movieInfo.title}</h1>
@@ -44,25 +24,25 @@ function MovieDetails(props: IMovieDetails) {
 
         <div className="movie-sidebar">
           <img src={picPath} alt="" className="img-fluid rounded" />
-          <div
+          <select
+            value={props.movie.data.type}
+            onChange={props.changeTypeEvent}
             className={
-              (movieData.type === "4K" ? "bg-dark" : "bg-primary") +
-              " movie-type text-white p-2 mt-1 mb-1 rounded-3 d-flex justify-content-center"
+              (props.movie.data.type === "4K" ? "bg-dark" : "bg-primary") +
+              " movie-type text-white p-2 mt-1 mb-1 rounded-3 d-flex justify-content-center w-100"
             }
           >
-            {movieData.type}
-          </div>
+            <option>Blu-ray</option>
+            <option>4K</option>
+          </select>
           <div className="d-flex gap-1">
             <Button
               variant="danger"
               className="flex-fill"
-              onClick={() => setShowPopup(true)}
+              onClick={props.deleteEvent}
             >
               Delete
-            </Button>
-            <Button variant="info" className="flex-fill">
-              Edit
-            </Button>
+            </Button>{" "}
           </div>
         </div>
         <div className="movie-details ps-3">

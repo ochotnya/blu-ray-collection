@@ -2,16 +2,18 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { IBluRay } from "../interfaces/IBluRay";
 import { ItmdbMovie } from "../interfaces/ItmdbMovie";
-import { collection, addDoc } from "firebase/firestore/lite";
-import { db } from "../firebase";
 import { searchMovie } from "../requests";
 import MovieSuggestions from "./MovieSuggestions";
 import "./AddMovie.css";
+import { useNavigate } from "react-router-dom";
+import { addMovie } from "../utils/DBfunctions";
+
 function AddMovie() {
   const [movieTitle, setMovieTitle] = useState("");
   const [movieType, setMovieType] = useState("Blu-ray");
   const [receivedMovies, setReceivedMovies] = useState<ItmdbMovie[]>([]);
   const [movieDetails, setMovieDetails] = useState<ItmdbMovie>();
+  const navigate = useNavigate();
 
   const changeMovieType = (e: ChangeEvent<HTMLInputElement>) => {
     setMovieType(e.target.value);
@@ -21,21 +23,24 @@ function AddMovie() {
     setMovieTitle(e.target.value);
     console.log(e.target.value);
   };
-  const handleSubmit = () => {
+
+  //add movie and go to home page if there are no errors
+  const handleSubmit = async () => {
     if (movieDetails !== undefined) {
       const newDisk: IBluRay = {
         title: movieTitle,
         movieInfo: movieDetails,
         type: movieType,
       };
-      writeToFirebase(newDisk);
+      if (await addMovie(newDisk)) {
+        navigate(`/`);
+      }
     }
   };
 
   const search = async () => {
     if (movieTitle !== "") {
       const list = await searchMovie(movieTitle);
-
       if (list !== undefined) setReceivedMovies(list);
     }
   };
@@ -45,10 +50,6 @@ function AddMovie() {
     search();
   };
 
-  const writeToFirebase = async (diskInfo: IBluRay) => {
-    const collectionRef = collection(db, "movies");
-    addDoc(collectionRef, diskInfo);
-  };
   return (
     <div>
       <div className="add-movie-container">

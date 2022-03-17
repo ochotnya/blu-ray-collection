@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PageHome from "./components/pages/PageHome";
 import PageNewMovie from "./components/pages/PageNewMovie";
 import PageMovieDetails from "./components/pages/PageMovieDetails";
+
 function App() {
   return (
     <Router>

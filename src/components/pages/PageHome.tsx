@@ -25,6 +25,7 @@ function Home() {
 
       return result;
     } catch (error) {
+      console.log(error);
       return [];
     }
   };
