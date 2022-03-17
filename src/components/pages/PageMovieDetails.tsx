@@ -33,7 +33,6 @@ function PageMovieDetails() {
           data: doc.data() as IBluRay,
         };
         setMovie(item);
-        console.log("witam");
       }
     );
     return unsubscribe;

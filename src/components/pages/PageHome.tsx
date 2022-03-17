@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 import { Form } from "react-bootstrap";
 
 import { IBluRay } from "../../interfaces/IBluRay";
@@ -10,11 +15,12 @@ import { IFirestoreMovie } from "../../interfaces/IFirestoreMovie";
 
 function Home() {
   const [myMovies, setmyMovies] = useState<IFirestoreMovie[]>([]);
-  const getData = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(getFirestore(), "movies"));
+  useEffect(() => {
+    setmyMovies([]);
+    const q = query(collection(getFirestore(), "movies"));
+    let result: IFirestoreMovie[] = [];
 
-      const result: IFirestoreMovie[] = [];
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       querySnapshot.docs.forEach((doc) => {
         const item: IFirestoreMovie = {
           id: doc.id,
@@ -22,19 +28,9 @@ function Home() {
         };
         result.push(item);
       });
-
-      return result;
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
-  };
-
-  const loadMyMovies = async () => {
-    setmyMovies(await getData());
-  };
-  useEffect(() => {
-    loadMyMovies();
+      setmyMovies(result);
+    });
+    return unsubscribe;
   }, []);
 
   return (
