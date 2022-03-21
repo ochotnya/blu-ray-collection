@@ -21,7 +21,6 @@ function AddMovie() {
 
   const changeMovieTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setMovieTitle(e.target.value);
-    console.log(e.target.value);
   };
 
   //add movie and go to home page if there are no errors
