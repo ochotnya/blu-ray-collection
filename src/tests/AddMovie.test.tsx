@@ -4,6 +4,12 @@ import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 
+const mockedUsedNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockedUsedNavigate,
+}));
+
 let movies: any[] | PromiseLike<any[]> = [];
 beforeEach(() => {
   jest.resetAllMocks();
