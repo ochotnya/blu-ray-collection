@@ -27,6 +27,7 @@ function MovieItem(props: IMovieItem) {
       onClick={handleClick}
     >
       <Card.Header
+        data-testid="cardHeader"
         className={
           props.details.data.type === "4K"
             ? "bg-dark text-white"
@@ -36,7 +37,9 @@ function MovieItem(props: IMovieItem) {
         {props.details.data.type}
       </Card.Header>
       <Card.Img variant="bottom" src={picPath} />
-      <Card.Body>{props.details.data.movieInfo.title}</Card.Body>
+      <Card.Body data-testid="cardTitle">
+        {props.details.data.movieInfo.title}
+      </Card.Body>
     </Card>
   );
 }

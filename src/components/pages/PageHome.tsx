@@ -46,7 +46,7 @@ function Home() {
       <NavigationBar />
 
       <div className="m-4">
-        <Form className="m-1">
+        <Form className="m-1 mb-4">
           <Form.Group>
             <Form.Control
               type="text"
