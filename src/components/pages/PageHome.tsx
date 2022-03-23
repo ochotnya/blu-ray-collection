@@ -21,15 +21,26 @@ function Home() {
   const [moviesToShow, setMoviesToShow] = useState<IFirestoreMovie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const filterByType = (requirements: string[]) => {
+    setIsLoading(true);
+    const filteredMovies = myMovies.filter((item) =>
+      requirements.includes(item.data.type)
+    );
+    setMoviesToShow(filteredMovies);
+    setIsLoading(false);
+  };
+
+  //update phrase in real time. If the phrase is empty show all movies
   const updatePhrase = (e: ChangeEvent<HTMLInputElement>) => {
     setPhrase(e.target.value);
+    if (e.target.value === "") setMoviesToShow(myMovies);
   };
 
   //set list according to the filter phrase. If the phrase is empty, it sets all movies
   const searchMovie = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const filteredMovies = myMovies.filter((item) =>
-      item.data.movieInfo.title.includes(phrase)
+      item.data.movieInfo.title.toLowerCase().includes(phrase.toLowerCase())
     );
     setMoviesToShow(filteredMovies);
   };
@@ -90,18 +101,21 @@ function Home() {
             textColor="text-white"
             bgColor="bg-success"
             count={moviesCount}
+            onClick={() => filterByType(["Blu-ray", "4K"])}
           />
           <Counter
             text="Blu-ray"
             textColor="text-white"
             bgColor="bg-primary"
             count={bluRayCount}
+            onClick={() => filterByType(["Blu-ray"])}
           />
           <Counter
             text="4K"
             textColor="text-white"
             bgColor="bg-dark"
             count={UHDCount}
+            onClick={() => filterByType(["4K"])}
           />
         </div>
 

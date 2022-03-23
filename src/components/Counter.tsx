@@ -6,11 +6,12 @@ interface ICounter {
   count: number;
   bgColor: string;
   textColor: string;
+  onClick?: () => void;
 }
 
 function Counter(props: ICounter) {
   return (
-    <div className="counter-container">
+    <div className="counter-container" onClick={props.onClick}>
       <div
         className={
           "counter-type d-flex justify-content-center p-1 " +
