@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   collection,
   getFirestore,
@@ -7,7 +6,6 @@ import {
   query,
 } from "firebase/firestore";
 import { Form } from "react-bootstrap";
-
 import { IBluRay } from "../../interfaces/IBluRay";
 import NavigationBar from "../NavigationBar";
 import MyCollection from "../MyCollection";
@@ -18,8 +16,25 @@ function Home() {
   const [moviesCount, setMoviesCount] = useState(0);
   const [bluRayCount, setBluRayCount] = useState(0);
   const [UHDCount, setUHDCount] = useState(0);
+  const [phrase, setPhrase] = useState("");
   const [myMovies, setmyMovies] = useState<IFirestoreMovie[]>([]);
+  const [moviesToShow, setMoviesToShow] = useState<IFirestoreMovie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const updatePhrase = (e: ChangeEvent<HTMLInputElement>) => {
+    setPhrase(e.target.value);
+  };
+
+  //set list according to the filter phrase. If the phrase is empty, it sets all movies
+  const searchMovie = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const filteredMovies = myMovies.filter((item) =>
+      item.data.movieInfo.title.includes(phrase)
+    );
+    setMoviesToShow(filteredMovies);
+  };
+
+  //load movies and subscribe to changes
   useEffect(() => {
     setmyMovies([]);
     const q = query(collection(getFirestore(), "movies"));
@@ -34,17 +49,18 @@ function Home() {
         result.push(item);
       });
       setmyMovies(result);
+      setMoviesToShow(result);
       setIsLoading(false);
     });
     return unsubscribe;
   }, []);
 
+  //update counters
   useEffect(() => {
     setBluRayCount(
-      myMovies.filter((item) => item.data.type == "Blu-ray").length
+      myMovies.filter((item) => item.data.type === "Blu-ray").length
     );
-
-    setUHDCount(myMovies.filter((item) => item.data.type == "4K").length);
+    setUHDCount(myMovies.filter((item) => item.data.type === "4K").length);
     setMoviesCount(myMovies.length);
   }, [myMovies]);
 
@@ -59,9 +75,10 @@ function Home() {
       <NavigationBar />
 
       <div className="m-4">
-        <Form className="m-1 mb-4">
+        <Form className="m-1 mb-4" onSubmit={searchMovie}>
           <Form.Group>
             <Form.Control
+              onChange={updatePhrase}
               type="text"
               placeholder="Search my collection..."
             ></Form.Control>
@@ -93,7 +110,7 @@ function Home() {
             <div className="spinner-border" />
           </div>
         )}
-        {!isLoading && <MyCollection movies={myMovies} />}
+        {!isLoading && <MyCollection movies={moviesToShow} />}
       </div>
     </div>
   );
