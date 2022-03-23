@@ -1,0 +1,14 @@
+.counter-container {
+  margin: 5px;
+  border-radius: 0.3rem;
+  border: 1px solid black;
+  display: grid;
+  grid-template-columns: 5rem 3rem;
+}
+
+.counter-type {
+  font-weight: 500;
+}
+
+.counter-count {
+}
